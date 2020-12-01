@@ -1,0 +1,25 @@
+buildscript {
+
+    ext {
+        /* kotlin */
+        kotlinVersion = "1.4.20"
+        coroutinesVersion = "1.4.1"
+    }
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
