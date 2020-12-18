@@ -2,19 +2,19 @@ package com.skoumal.grimoire.wand
 
 import android.content.Context
 
-fun Context.text(stringRes: Int): CharSequence =
-    TextWand.Resource(stringRes).getText(resources)
+fun Context.text(stringRes: Int, vararg args: Any): CharSequence =
+    TextWand.Resource(stringRes, *args).getText(resources)
 
-fun Context.quantity(stringRes: Int, quantity: Int, vararg args: Any): CharSequence =
+fun Context.quantityText(stringRes: Int, quantity: Int, vararg args: Any): CharSequence =
     TextWand.Quantity(stringRes, quantity, *args).getText(resources)
 
 // ---
 
-fun text(text: CharSequence): TextWand =
+fun asText(text: CharSequence): TextWand =
     TextWand.Sequence(text)
 
-fun textRes(res: Int): TextWand =
-    TextWand.Resource(res)
+fun asText(res: Int, vararg args: Any): TextWand =
+    TextWand.Resource(res, *args)
 
-fun textQuantity(res: Int, quantity: Int, vararg args: Any): TextWand =
+fun asText(res: Int, quantity: Int, vararg args: Any): TextWand =
     TextWand.Quantity(res, quantity, *args)
