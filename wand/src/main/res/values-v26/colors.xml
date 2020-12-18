@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorNavigationBar">@color/colorNavigationBar_DayNight</color>
+    <color name="colorStatusBar">@color/colorStatusBar_DayNight</color>
+
+</resources>

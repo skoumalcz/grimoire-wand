@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorNavigationBar">#000000</color>
+    <color name="colorStatusBar">#000000</color>
+
+    <color name="colorNavigationBar_DayNight">#B3FFFFFF</color>
+    <color name="colorStatusBar_DayNight">#B3FFFFFF</color>
+
+</resources>

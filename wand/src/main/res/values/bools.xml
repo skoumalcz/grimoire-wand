@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <bool name="dark_mode">false</bool>
+    <bool name="light_mode">true</bool>
+
+    <bool name="windowTranslucentStatus">true</bool>
+    <bool name="windowTranslucentNavigation">true</bool>
+
+</resources>

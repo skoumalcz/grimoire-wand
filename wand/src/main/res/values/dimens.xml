@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--region Layout-->
+    <dimen name="l0_125">2dp</dimen>
+    <dimen name="l0_25">4dp</dimen>
+    <dimen name="l0_50">8dp</dimen>
+    <dimen name="l0_75">12dp</dimen>
+
+    <dimen name="l1">16dp</dimen>
+    <dimen name="l1_25">20dp</dimen>
+    <dimen name="l1_50">24dp</dimen>
+    <dimen name="l1_75">28dp</dimen>
+
+    <dimen name="l2">32dp</dimen>
+    <dimen name="l2_25">36dp</dimen>
+    <dimen name="l2_50">40dp</dimen>
+    <dimen name="l2_75">44dp</dimen>
+
+    <dimen name="l3">48dp</dimen>
+    <dimen name="l3_25">52dp</dimen>
+    <dimen name="l3_50">56dp</dimen>
+    <dimen name="l3_75">60dp</dimen>
+    <dimen name="l4">64dp</dimen>
+    <!--endregion-->
+
+    <!--region Corner / Round elements-->
+    <dimen name="r0_125">1dp</dimen>
+    <dimen name="r0_25">2dp</dimen>
+    <dimen name="r0_50">4dp</dimen>
+    <dimen name="r0_75">6dp</dimen>
+
+    <dimen name="r1">8dp</dimen>
+    <dimen name="r1_25">10dp</dimen>
+    <dimen name="r1_50">12dp</dimen>
+    <dimen name="r1_75">14dp</dimen>
+
+    <dimen name="r2">16dp</dimen>
+    <dimen name="r2_25">18dp</dimen>
+    <dimen name="r2_50">20dp</dimen>
+    <dimen name="r2_75">22dp</dimen>
+
+    <dimen name="r3">24dp</dimen>
+    <dimen name="r3_25">26dp</dimen>
+    <dimen name="r3_50">28dp</dimen>
+    <dimen name="r3_75">30dp</dimen>
+
+    <dimen name="r4">32dp</dimen>
+    <dimen name="r4_25">34dp</dimen>
+    <dimen name="r4_50">36dp</dimen>
+    <dimen name="r4_75">38dp</dimen>
+    <!--endregion-->
+
+    <!--region Elevation-->
+    <dimen name="e0_125">.5dp</dimen>
+    <dimen name="e0_25">1dp</dimen>
+    <dimen name="e0_50">2dp</dimen>
+    <dimen name="e0_75">3dp</dimen>
+
+    <dimen name="e1">4dp</dimen>
+    <dimen name="e2">8dp</dimen>
+    <dimen name="e3">16dp</dimen>
+    <!--endregion-->
+
+</resources>
