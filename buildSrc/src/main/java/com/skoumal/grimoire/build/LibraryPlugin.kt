@@ -30,9 +30,11 @@ class LibraryPlugin : Plugin<Project> {
             .setMinSdk(21)
             .applyJavaVersion(JavaVersion.VERSION_1_8)
 
+        val publishing = LibraryPublishing(target)
+            .addJavadocTask()
+
         target.afterEvaluate {
-            LibraryPublishing(target)
-                .addJavadocTask()
+            publishing
                 .applyPublication()
                 .applyBintrayOnPublication()
         }

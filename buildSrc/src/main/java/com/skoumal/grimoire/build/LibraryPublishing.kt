@@ -32,7 +32,7 @@ class LibraryPublishing(
             }
             androidSourcesJar = project.task("androidSourcesJar", Jar::class) {
                 archiveClassifier.set("sources")
-                from(sourceSets["main"].java.getSourceFiles())
+                from(sourceSets["main"].java.srcDirs)
             }
         }
     }
