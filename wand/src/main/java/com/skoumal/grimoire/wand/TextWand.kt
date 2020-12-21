@@ -8,10 +8,14 @@ sealed class TextWand {
 
     abstract fun getText(resources: Resources): CharSequence
 
-    protected fun Array<out Any>.resolveRecursively(resources: Resources) = map {
+    protected fun Array<out Any>.resolveRecursively(resources: Resources) = arrayMap {
         if (it is TextWand) it.getText(resources)
         else it
-    }.toTypedArray()
+    }
+
+    private inline fun <T, reified R> Array<T>.arrayMap(element: (T) -> R) = Array(size) {
+        element(this[it])
+    }
 
     class Resource(
         @JvmField @StringRes private val res: Int,
