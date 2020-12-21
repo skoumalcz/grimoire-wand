@@ -41,13 +41,21 @@ data class InsetsWand(
         @Volatile
         private var savedInsets: InsetsWand? = null
 
-        operator fun invoke(activity: ComponentActivity): Flow<InsetsWand> {
-            return invoke(activity.findViewById(android.R.id.content), consumeInsets = false)
-        }
+        operator fun invoke(
+            activity: ComponentActivity,
+            consumeInsets: Boolean = false
+        ) = invoke(
+            view = activity.findViewById(android.R.id.content),
+            consumeInsets = consumeInsets
+        )
 
-        operator fun invoke(fragment: Fragment): Flow<InsetsWand> {
-            return invoke(fragment.requireView(), consumeInsets = true)
-        }
+        operator fun invoke(
+            fragment: Fragment,
+            consumeInsets: Boolean = true
+        ) = invoke(
+            view = fragment.requireView(),
+            consumeInsets = consumeInsets
+        )
 
         operator fun invoke(view: View, consumeInsets: Boolean = true): Flow<InsetsWand> {
             val currentInsets = savedInsets
