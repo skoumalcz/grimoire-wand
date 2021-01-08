@@ -1,0 +1,20 @@
+plugins {
+    id 'project.build'
+}
+
+android {
+
+    buildFeatures {
+        dataBinding true
+    }
+
+}
+
+dependencies {
+
+    // keep implementation for libraries in unstable versioning scheme
+    // replace with compileOnly when reaches stable
+
+    implementation("androidx.recyclerview:recyclerview:1.2.0-beta01")
+
+}
