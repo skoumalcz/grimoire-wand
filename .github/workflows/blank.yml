@@ -20,6 +20,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
       - name: Gradle Android
         # You may pin to the exact commit or the version.
         # uses: Raul6469/android-gradle-action@b8fc7c7bde2562a4578b7e1bd996cc78d841638e
