@@ -32,12 +32,12 @@ open class BindingViewHolder<Data>(
     )
 
     open fun onBindData(data: Data) {
-        binding.setVariable(BR.data, data)
+        binding.setVariable(BR.item, data)
         extrasBinder?.onBindExtras(binding)
     }
 
     open fun onClearData() {
-        binding.setVariable(BR.data, null)
+        binding.setVariable(BR.item, null)
         extrasBinder?.onClearExtras(binding)
     }
 
