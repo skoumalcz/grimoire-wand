@@ -188,7 +188,10 @@ specific items can be done through
 [`getItemAt(position)`](wand-recyclerview/src/main/java/com/skoumal/grimoire/wand/recyclerview/diff/AdapterListDiffer.kt).
 
 ```kotlin
-class MyAdapter(differ: DiffUtil.ItemCallback<MyData>) : AsyncBindingAdapter<MyData>() {
+class MyAdapter(
+    differ: DiffUtil.ItemCallback<MyData>,
+    extras: ExtrasBinder? = null
+) : AsyncBindingAdapter<MyData>(differ, extras) {
 
     override fun getItemViewType(position: Int) {
         val item = getItemAt(position)
