@@ -60,7 +60,7 @@ interface AdapterListDiffer<Data> {
 
     val currentList: List<Data>
 
-    suspend fun submitInternal(list: List<Data>): DiffUtil.DiffResult
+    suspend fun doDiff(list: List<Data>): DiffUtil.DiffResult
 
 }
 
@@ -73,7 +73,7 @@ val <Data> AdapterListDiffer<Data>.size
 suspend fun <DifferAdapter, Data> DifferAdapter.submitList(list: List<Data>)
         where DifferAdapter : RecyclerView.Adapter<*>,
               DifferAdapter : AdapterListDiffer<Data> {
-    val result = submitInternal(list)
+    val result = doDiff(list)
     withContext(Dispatchers.Main.immediate) {
         result.dispatchUpdatesTo(this@submitList)
     }
