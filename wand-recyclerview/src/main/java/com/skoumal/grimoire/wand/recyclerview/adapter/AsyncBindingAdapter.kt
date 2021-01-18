@@ -16,7 +16,7 @@ import com.skoumal.grimoire.wand.recyclerview.viewholder.BindingViewHolder
  * @see AdapterListDiffer
  * @see BindingViewHolder
  * */
-abstract class AsyncBindingAdapter<Data : Any>(
+abstract class AsyncBindingAdapter<Data>(
     differ: DiffUtil.ItemCallback<Data>,
     private val extrasBinder: ExtrasBinder? = null
 ) : RecyclerView.Adapter<BindingViewHolder<Data>>(),

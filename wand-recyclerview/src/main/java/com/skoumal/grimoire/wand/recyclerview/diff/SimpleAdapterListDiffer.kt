@@ -7,7 +7,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-class SimpleAdapterListDiffer<Data : Any>(
+class SimpleAdapterListDiffer<Data>(
     private val differ: DiffUtil.ItemCallback<Data>,
     private val context: CoroutineContext = RecyclerViewDispatchers.Single
 ) : AdapterListDiffer<Data> {
@@ -17,7 +17,7 @@ class SimpleAdapterListDiffer<Data : Any>(
     override var currentList: List<Data> = emptyList()
         private set
 
-    override suspend fun submitInternal(list: List<Data>): DiffUtil.DiffResult {
+    override suspend fun doDiff(list: List<Data>): DiffUtil.DiffResult {
         semaphore.acquire()
         return withContext(context) {
             consumeList(list)
