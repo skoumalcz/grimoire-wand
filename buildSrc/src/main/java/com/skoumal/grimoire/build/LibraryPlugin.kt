@@ -17,7 +17,6 @@ class LibraryPlugin : Plugin<Project> {
         val options = AndroidLibraryFactory(target)
             .applyAndroid()
             .applyKotlin()
-            .applyPublishing()
             .applyKotlinDependencies(kotlinVersion)
             .applyCoroutineDependencies(coroutinesVersion)
             .applyTestDependencies()
@@ -29,15 +28,6 @@ class LibraryPlugin : Plugin<Project> {
             .setTargetSdk(30)
             .setMinSdk(21)
             .applyJavaVersion(JavaVersion.VERSION_1_8)
-
-        val publishing = LibraryPublishing(target)
-            .addJavadocTask()
-
-        target.afterEvaluate {
-            publishing
-                .applyPublication()
-                .applyBintrayOnPublication()
-        }
     }
 
 }

@@ -1,5 +1,6 @@
 plugins {
     id 'project.build'
+    id("com.vanniktech.maven.publish")
 }
 
 android {

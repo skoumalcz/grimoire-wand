@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy
+
+# Controls when the action will run.
+on:
+  push:
+    tags:
+      - '*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+      - name: Set version
+        run: echo "VERSION_NAME=${GITHUB_REF#refs/*/}" >> gradle.properties
+      - name: Append variables
+        run: |
+          echo "mavenCentralRepositoryUsername=$OOSRH_USERNAME" >> gradle.properties
+          echo "mavenCentralRepositoryPassword=$OOSRH_PASSWORD" >> gradle.properties
+          echo "signing.keyId=$SIGNING_KEY_ID" >> gradle.properties
+          echo "signing.password=$SIGNING_PASSWORD" >> gradle.properties
+          echo "signing.secretKeyRingFile=$SIGNING_SECRET_RING" >> gradle.properties
+        env:
+          OOSRH_USERNAME: ${{ secrets.OOSRH_USERNAME }}
+          OOSRH_PASSWORD: ${{ secrets.OOSRH_PASSWORD }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_SECRET_RING: ${{ secrets.SIGNING_SECRET_RING }}
+      - name: Create secring.gpg file
+        run: |
+          mkdir -p $SIGNING_SECRET_RING
+          rmdir $SIGNING_SECRET_RING
+          printf "$SIGNING_SECRET_RING_FILE" | base64 --decode > $SIGNING_SECRET_RING
+        env:
+          SIGNING_SECRET_RING: ${{ secrets.SIGNING_SECRET_RING }}
+          SIGNING_SECRET_RING_FILE: ${{ secrets.SIGNING_SECRET_RING_FILE }}
+      - name: Gradle Android
+        # You may pin to the exact commit or the version.
+        # uses: Raul6469/android-gradle-action@b8fc7c7bde2562a4578b7e1bd996cc78d841638e
+        uses: Raul6469/android-gradle-action@2.0.0
+        env:
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+        with:
+          # The ./gradlew command arguments
+          script: assembleRelease publish
