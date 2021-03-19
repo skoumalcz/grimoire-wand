@@ -163,6 +163,55 @@ _values-v27/styles.xml_
 </style>
 ```
 
+### AutoClean
+
+Having to deal with properties such as RecyclerView's Adapter is a hassle, which may or may not
+cause memory leaks, depending on how are you disposing the adapter. If you ever cleared the adapter
+from the view there are essentially two ways.
+
+1) Set the adapter on RecyclerView to `null`
+    - this is not always preferred since your viewHolders can be still attached or bound to the
+      local context for whatever reason
+
+2) Set the adapter in your view (activity, fragment, …) to `null`
+    - this helps the GC to understand that you don't want to use it anymore, bindings (views) get
+      automatically disposed as well and so the reference can be cleared without any issues
+
+Since the latter option is more helpful, we created `AutoClean`. The usage is pretty straightforward
+and you can start using it now in _any_ `LifecycleOwner`. There are essentially two ways to use it.
+
+#### Immutable, lazy
+
+The lambda evaluates every time the internal value is empty. Which is essentially every time the
+fragment initializes (_with some caveats_).
+
+```kotlin
+class MyFragment : Fragment(R.layout.fragment_my) {
+
+    private val myAdapter by autoClean {
+        MyAdapter()
+    }
+
+}
+```
+
+#### Mutable, with default value
+
+If accessed _before_ it's been assigned value it either throws or returns default value. Again with
+lifecycle's death, the reference is cleared.
+
+```kotlin
+class MyFragment : Fragment(R.layout.fragment_my) {
+
+    private var myAdapter: MyAdapter by autoClean(/*optionally default*/)
+
+    override fun onViewCreated(…) {
+        myAdapter = MyAdapter()
+    }
+
+}
+```
+
 ### Extensions
 
 You might find a healthy amount of helpful extensions here:
