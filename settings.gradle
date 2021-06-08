@@ -1,3 +1,4 @@
+rootProject.name = "grimoire-wand"
 include ':wand'
 include ':wand-recyclerview'
-rootProject.name = "grimoire-wand"
+include ':wand-wizard'
