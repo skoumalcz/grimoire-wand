@@ -256,4 +256,161 @@ class MyAdapter(
 > You can also bind extras (additional data, callbacks, etc…) to your items through
 [ExtrasBinder](wand-recyclerview/src/main/java/com/skoumal/grimoire/wand/recyclerview/ExtrasBinder.kt)
 
-Logo by <a href="https://www.flaticon.com/authors/smalllikeart" title="smalllikeart">smalllikeart</a>
+## Wizard
+
+Wizard is here to help you with the annoyance of declaring accounts and managing them. It comes with
+a bonus of easy declaration of sync services and so forth. Here's how to set it up.
+
+DISCLAIMER:
+> This info doesn't need to be 100% up to date for the Android Framework. For the most part refer
+> to official docs.
+
+### `DefaultAuthenticatorService`
+
+Extendable service that already contains all the necessary default stubs. For the most part you only
+need to include tags to your app's manifest and then add xml resource.
+
+```xml
+
+<service android:name="com.skoumal.grimoire.wand.wizard.auth.DefaultAuthenticatorService">
+    <intent-filter>
+        <action android:name="android.accounts.AccountAuthenticator" />
+    </intent-filter>
+    <meta-data 
+        android:name="android.accounts.AccountAuthenticator"
+        android:resource="@xml/authenticator" />
+</service>
+```
+
+And don't forget to create `@xml/authenticator`.
+
+```xml
+
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="@string/default_account_type" 
+    android:icon="@mipmap/ic_launcher"
+    android:smallIcon="@mipmap/ic_launcher" 
+    android:label="@string/app_name" />
+```
+
+Now you're set up to use `Wizard`! Yey!
+
+### `SyncService`
+
+At this point you might already want to add a background sync service. A little bit more agency is
+needed in order to create a sync adapter, but it's not something terribly hard.
+
+```kotlin
+class MySyncAdapter @JvmOverloads constructor(
+    context: Context,
+    autoInitialize: Boolean,
+    allowParallelSyncs: Boolean = false,
+) : AbstractThreadedSyncAdapter(context, autoInitialize, allowParallelSyncs) {
+
+    // todo add your implementation
+
+}
+```
+
+```kotlin
+class MySyncService : SyncService() {
+    override fun onCreateSyncAdapter() = MySyncAdapter(this, true)
+}
+```
+
+Moreover you need to register your newly created service in your manifest.
+
+```xml
+
+<service 
+    android:name=".MySyncService" 
+    android:exported="true" 
+    android:process=":sync">
+    <intent-filter>
+        <action android:name="android.content.SyncAdapter" />
+    </intent-filter>
+    <meta-data 
+        android:name="android.content.SyncAdapter" 
+        android:resource="@xml/sync_adapter" />
+</service>
+```
+
+Now that's done, you need to create a `@xml/sync_adapter` definition.
+
+```xml
+
+<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="@string/default_account_type" 
+    android:allowParallelSyncs="false"
+    android:contentAuthority="@string/default_content_authority" 
+    android:supportsUploading="true"
+    android:isAlwaysSyncable="true" 
+    android:userVisible="true" />
+```
+
+You might want to create new content authority, if you already don't have one. You can also use a
+simple stub created for you. Worry not though, you can build upon empty implementation.
+
+```kotlin
+class MyContentProvider : DefaultContentProvider()
+```
+
+And finally you can add you provider to the manifest.
+
+```xml
+<provider
+    android:authorities="@string/default_content_authority"
+    android:syncable="true"
+    android:exported="false"
+    android:label="@string/default_provider_label"
+    android:name=".MyContentProvider" />
+```
+
+### WizardRegistry
+
+To use this registry you need to either have authentication implemented before, or follow the 
+tutorial above. Only then you can proceed.
+
+First of all you need an instance of your registry. You need exactly one registry per account type.
+
+```kotlin
+val registry = WizardRegistry.Builder(context)
+    .setAccountType(context.getString(R.string.default_account_type))
+    .setAccountResolver { _,_ -> true } // optional
+    .build()
+```
+
+The difference between this and native API is that you do not need to create account before 
+fetching its info, or even worse iterating over existing accounts, which can be a mess at times.
+
+Therefore all you need to do is to *create*, *fetch* or *remove* accounts.
+
+```kotlin
+val extras = mapOf(
+    UserExtra.COLOR, Color.BLUE.toString()
+)
+val wizard = Wizard(
+    name = "John Doe", // will be visible in system settings
+    password = "backendtoken",
+    extra = extras
+)
+registry.putWizard(wizard) // aaand done!
+```
+
+Just like that you're signed in to your app. Wonder how to check whether you're signed in?
+
+```kotlin
+if (!registry.exists()) {
+    // show login
+}
+```
+
+Sign out? Just as easy.
+
+```kotlin
+registry.removeWizard(null) // null signs out all existing uses with this account type
+```
+
+
+Logo by <a href="https://www.flaticon.com/authors/smalllikeart" title="smalllikeart">
+smalllikeart</a>
