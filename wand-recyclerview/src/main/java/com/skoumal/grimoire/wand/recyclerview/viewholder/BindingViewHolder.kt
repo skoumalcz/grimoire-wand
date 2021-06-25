@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.skoumal.grimoire.wand.recyclerview.BR
 import com.skoumal.grimoire.wand.recyclerview.ExtrasBinder
@@ -26,9 +27,29 @@ open class BindingViewHolder<Data>(
     private val extrasBinder: ExtrasBinder? = null
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    constructor(parent: ViewGroup, layoutRes: Int, extrasBinder: ExtrasBinder? = null) : this(
-        binding = DataBindingUtil.inflate(parent.layoutInflater, layoutRes, parent, false),
+    constructor(
+        parent: ViewGroup,
+        layoutRes: Int,
+        lifecycleOwner: LifecycleOwner?,
+        extrasBinder: ExtrasBinder? = null
+    ) : this(
+        binding = createBinding(parent, layoutRes, lifecycleOwner),
         extrasBinder = extrasBinder
+    )
+
+    @Deprecated(
+        "This constructor doesn't automatically assign lifecycleOwner to the binding, leaking the view.",
+        level = DeprecationLevel.ERROR
+    )
+    constructor(
+        parent: ViewGroup,
+        layoutRes: Int,
+        extrasBinder: ExtrasBinder? = null
+    ) : this(
+        parent = parent,
+        layoutRes = layoutRes,
+        lifecycleOwner = null,
+        extrasBinder = extrasBinder,
     )
 
     open fun onBindData(data: Data) {
@@ -39,6 +60,24 @@ open class BindingViewHolder<Data>(
     open fun onClearData() {
         binding.setVariable(BR.item, null)
         extrasBinder?.onClearExtras(binding)
+    }
+
+    companion object {
+
+        private fun createBinding(
+            parent: ViewGroup,
+            layoutRes: Int,
+            owner: LifecycleOwner?
+        ): ViewDataBinding {
+            val inflater = parent.layoutInflater
+            val binding: ViewDataBinding =
+                DataBindingUtil.inflate(inflater, layoutRes, parent, false)
+
+            binding.lifecycleOwner = owner
+
+            return binding
+        }
+
     }
 
 }

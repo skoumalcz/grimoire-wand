@@ -1,6 +1,7 @@
 package com.skoumal.grimoire.wand.recyclerview.adapter
 
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.skoumal.grimoire.wand.recyclerview.ExtrasBinder
@@ -9,6 +10,7 @@ import com.skoumal.grimoire.wand.recyclerview.diff.SimpleAdapterListDiffer
 import com.skoumal.grimoire.wand.recyclerview.diff.getItemAt
 import com.skoumal.grimoire.wand.recyclerview.diff.size
 import com.skoumal.grimoire.wand.recyclerview.viewholder.BindingViewHolder
+import java.lang.ref.WeakReference
 
 /**
  * Adapter merging principles of [AdapterListDiffer] and [BindingViewHolder]
@@ -18,12 +20,25 @@ import com.skoumal.grimoire.wand.recyclerview.viewholder.BindingViewHolder
  * */
 abstract class AsyncBindingAdapter<Data>(
     differ: DiffUtil.ItemCallback<Data>,
-    private val extrasBinder: ExtrasBinder? = null
+    lifecycleOwner: LifecycleOwner?,
+    extrasBinder: ExtrasBinder? = null
 ) : RecyclerView.Adapter<BindingViewHolder<Data>>(),
-    AdapterListDiffer<Data> by SimpleAdapterListDiffer<Data>(differ) {
+    AdapterListDiffer<Data> by SimpleAdapterListDiffer(differ) {
+
+    private val lifecycleOwner = WeakReference(lifecycleOwner)
+    private val extrasBinder = WeakReference(extrasBinder)
+
+    constructor(
+        differ: DiffUtil.ItemCallback<Data>,
+        extrasBinder: ExtrasBinder? = null
+    ) : this(
+        differ = differ,
+        lifecycleOwner = null,
+        extrasBinder = extrasBinder
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<Data> {
-        return BindingViewHolder(parent, viewType, extrasBinder)
+        return BindingViewHolder(parent, viewType, lifecycleOwner.get(), extrasBinder.get())
     }
 
     override fun onBindViewHolder(holder: BindingViewHolder<Data>, position: Int) {
