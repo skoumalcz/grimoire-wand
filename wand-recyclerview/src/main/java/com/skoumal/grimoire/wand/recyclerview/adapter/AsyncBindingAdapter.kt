@@ -21,12 +21,12 @@ import java.lang.ref.WeakReference
 abstract class AsyncBindingAdapter<Data>(
     differ: DiffUtil.ItemCallback<Data>,
     lifecycleOwner: LifecycleOwner?,
-    extrasBinder: ExtrasBinder? = null
+    // don't weak reference binder, bcs it will get cleared if called through ExtrasBinder {}
+    private val extrasBinder: ExtrasBinder? = null
 ) : RecyclerView.Adapter<BindingViewHolder<Data>>(),
     AdapterListDiffer<Data> by SimpleAdapterListDiffer(differ) {
 
     private val lifecycleOwner = WeakReference(lifecycleOwner)
-    private val extrasBinder = WeakReference(extrasBinder)
 
     constructor(
         differ: DiffUtil.ItemCallback<Data>,
@@ -38,7 +38,7 @@ abstract class AsyncBindingAdapter<Data>(
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<Data> {
-        return BindingViewHolder(parent, viewType, lifecycleOwner.get(), extrasBinder.get())
+        return BindingViewHolder(parent, viewType, lifecycleOwner.get(), extrasBinder)
     }
 
     override fun onBindViewHolder(holder: BindingViewHolder<Data>, position: Int) {
