@@ -28,6 +28,10 @@ abstract class AsyncBindingAdapter<Data>(
 
     private val lifecycleOwner = WeakReference(lifecycleOwner)
 
+    @Deprecated(
+        "Use constructor with lifecycle owner to properly allow binding to (un)bind",
+        level = DeprecationLevel.ERROR
+    )
     constructor(
         differ: DiffUtil.ItemCallback<Data>,
         extrasBinder: ExtrasBinder? = null
