@@ -13,7 +13,7 @@ internal class WizardAccountManager(
 
     fun get(vararg extras: NamedExtra): Wizard? {
         val account = account.getOrNull() ?: return null
-        val password = manager.getPassword(account)
+        val password = manager.getPassword(account) ?: return null
         val extra = extra[extras]
         return Wizard(
             name = account.name.orEmpty(),
