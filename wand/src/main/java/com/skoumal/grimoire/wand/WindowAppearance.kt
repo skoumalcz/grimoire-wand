@@ -18,7 +18,7 @@ abstract class WindowAppearance private constructor(
         get() = activity.theme.color(android.R.attr.navigationBarColor)
 
     private val themeBackgroundColor: Int
-        get() = activity.theme.color(android.R.attr.windowBackground)
+        get() = activity.theme.color(R.attr.colorSurface)
 
     protected open val statusBarColor: Int
         get() = when {
