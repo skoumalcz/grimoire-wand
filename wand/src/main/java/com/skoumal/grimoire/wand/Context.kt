@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 
 fun Context.drawable(@DrawableRes res: Int) = AppCompatResources.getDrawable(this, res)
@@ -13,19 +13,27 @@ fun Context.drawable(@DrawableRes res: Int) = AppCompatResources.getDrawable(thi
 // region Lifecycle
 
 val Activity.windowInsetsControllerCompat
-    inline get() = WindowInsetsControllerCompat(window, window.decorView)
+    inline get() = ViewCompat.getWindowInsetsController(findViewById(android.R.id.content))
 
-fun Activity.show(types: Int) = windowInsetsControllerCompat.show(types)
+fun Activity.show(types: Int) {
+    windowInsetsControllerCompat?.show(types)
+}
 
-fun Activity.hide(types: Int) = windowInsetsControllerCompat.hide(types)
+fun Activity.hide(types: Int) {
+    windowInsetsControllerCompat?.hide(types)
+}
 
 
 val Fragment.windowInsetsControllerCompat
-    inline get() = requireActivity().windowInsetsControllerCompat
+    inline get() = activity?.windowInsetsControllerCompat
 
-fun Fragment.show(types: Int) = windowInsetsControllerCompat.show(types)
+fun Fragment.show(types: Int) {
+    windowInsetsControllerCompat?.show(types)
+}
 
-fun Fragment.hide(types: Int) = windowInsetsControllerCompat.hide(types)
+fun Fragment.hide(types: Int) {
+    windowInsetsControllerCompat?.hide(types)
+}
 
 // endregion
 

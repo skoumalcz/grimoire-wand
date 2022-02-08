@@ -62,12 +62,12 @@ data class InsetsWand(
             val channel = Channel<InsetsWand>()
 
             if (currentInsets != null) {
-                channel.offer(currentInsets)
+                channel.trySend(currentInsets)
             }
 
             ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
                 with(InsetsWand(insets)) {
-                    channel.offer(this)
+                    channel.trySend(this)
                     savedInsets = this
                 }
 
