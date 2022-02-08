@@ -18,7 +18,7 @@ sealed class ColorWand {
 
     abstract fun getColor(context: Context): ColorStateList
 
-    class StateList(@JvmField @ColorRes private val res: Int) : ColorWand() {
+    class StateList(@ColorRes private val res: Int) : ColorWand() {
         override fun getColor(context: Context): ColorStateList {
             return colorStateListCompat(context)
                 ?: ColorStateList.valueOf(android.graphics.Color.BLACK)
@@ -31,13 +31,13 @@ sealed class ColorWand {
         }
     }
 
-    class ColorInt(@JvmField private val color: Int) : ColorWand() {
+    class ColorInt(private val color: Int) : ColorWand() {
         override fun getColor(context: Context): ColorStateList {
             return ColorStateList.valueOf(color)
         }
     }
 
-    class Resource(@JvmField @ColorRes private val res: Int) : ColorWand() {
+    class Resource(@ColorRes private val res: Int) : ColorWand() {
         override fun getColor(context: Context): ColorStateList {
             return ColorStateList.valueOf(colorCompat(context) ?: android.graphics.Color.BLACK)
         }
@@ -49,7 +49,7 @@ sealed class ColorWand {
         }
     }
 
-    class Attribute(@JvmField @AttrRes private val res: Int) : ColorWand() {
+    class Attribute(@AttrRes private val res: Int) : ColorWand() {
         override fun getColor(context: Context): ColorStateList {
             return with(context.theme.obtainStyledAttributes(intArrayOf(res))) {
                 getColorStateList(0)

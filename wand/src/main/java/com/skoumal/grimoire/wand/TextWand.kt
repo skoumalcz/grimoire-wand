@@ -19,8 +19,8 @@ sealed class TextWand {
     }
 
     class Resource(
-        @JvmField @StringRes private val res: Int,
-        @JvmField private vararg val args: Any
+        @StringRes private val res: Int,
+        private vararg val args: Any
     ) : TextWand() {
         override fun getText(resources: Resources): CharSequence {
             return resources.getString(res, *args.resolveRecursively(resources))
@@ -28,9 +28,9 @@ sealed class TextWand {
     }
 
     class Quantity(
-        @JvmField @PluralsRes private val res: Int,
-        @JvmField private val quantity: Int,
-        @JvmField private vararg val args: Any
+        @PluralsRes private val res: Int,
+        private val quantity: Int,
+        private vararg val args: Any
     ) : TextWand() {
         override fun getText(resources: Resources): CharSequence {
             return resources.getQuantityString(res, quantity, *args.resolveRecursively(resources))
@@ -38,7 +38,7 @@ sealed class TextWand {
     }
 
     class Sequence(
-        @JvmField private val charSequence: CharSequence
+        private val charSequence: CharSequence
     ) : TextWand() {
         override fun getText(resources: Resources): CharSequence {
             return charSequence
