@@ -3,9 +3,10 @@ package com.skoumal.grimoire.wand
 import android.app.Activity
 import android.os.Build
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.RequiresApi
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.ViewCompat
 
 abstract class WindowAppearance private constructor(
     private val activity: Activity
@@ -59,10 +60,10 @@ abstract class WindowAppearance private constructor(
     }
 
     fun apply() {
+        val view = activity.findViewById<ViewGroup>(android.R.id.content)
         val window = activity.window
-        val view = window.decorView
 
-        val manager = WindowInsetsControllerCompat(window, view)
+        val manager = ViewCompat.getWindowInsetsController(view) ?: return
 
         manager.isAppearanceLightStatusBars = isStatusBarLight
         manager.isAppearanceLightNavigationBars = isNavigationBarLight
