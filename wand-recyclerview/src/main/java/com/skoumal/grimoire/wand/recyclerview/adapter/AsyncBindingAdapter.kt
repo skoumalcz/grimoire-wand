@@ -2,20 +2,17 @@ package com.skoumal.grimoire.wand.recyclerview.adapter
 
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.skoumal.grimoire.wand.recyclerview.ExtrasBinder
-import com.skoumal.grimoire.wand.recyclerview.diff.AdapterListDiffer
-import com.skoumal.grimoire.wand.recyclerview.diff.SimpleAdapterListDiffer
-import com.skoumal.grimoire.wand.recyclerview.diff.getItemAt
-import com.skoumal.grimoire.wand.recyclerview.diff.size
 import com.skoumal.grimoire.wand.recyclerview.viewholder.BindingViewHolder
 import java.lang.ref.WeakReference
 
 /**
- * Adapter merging principles of [AdapterListDiffer] and [BindingViewHolder]
+ * Adapter merging principles of [AsyncListDiffer] and [BindingViewHolder]
  *
- * @see AdapterListDiffer
+ * @see AsyncListDiffer
  * @see BindingViewHolder
  * */
 abstract class AsyncBindingAdapter<Data>(
@@ -23,10 +20,13 @@ abstract class AsyncBindingAdapter<Data>(
     lifecycleOwner: LifecycleOwner?,
     // don't weak reference binder, bcs it will get cleared if called through ExtrasBinder {}
     private val extrasBinder: ExtrasBinder? = null
-) : RecyclerView.Adapter<BindingViewHolder<Data>>(),
-    AdapterListDiffer<Data> by SimpleAdapterListDiffer(differ) {
+) : RecyclerView.Adapter<BindingViewHolder<Data>>() {
 
     private val lifecycleOwner = WeakReference(lifecycleOwner)
+    private val differ by lazy { AsyncListDiffer(this, differ) }
+
+    val currentList: List<Data>
+        get() = differ.currentList
 
     @Deprecated(
         "Use constructor with lifecycle owner to properly allow binding to (un)bind",
@@ -53,9 +53,17 @@ abstract class AsyncBindingAdapter<Data>(
     }
 
     override fun getItemCount(): Int {
-        return size
+        return currentList.size
     }
 
     abstract override fun getItemViewType(position: Int): Int
+
+    fun getItemAt(position: Int): Data? {
+        return currentList.getOrNull(position)
+    }
+
+    fun submitList(list: List<Data>) {
+        differ.submitList(list)
+    }
 
 }
