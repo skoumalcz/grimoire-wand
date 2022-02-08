@@ -1,19 +1,15 @@
 plugins {
-    id 'project.build'
-    id("com.vanniktech.maven.publish")
-}
-
-repositories {
-    google()
+    id 'android-lib'
+    id 'com.vanniktech.maven.publish'
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.activity:activity-ktx:1.3.1")
-    implementation("androidx.fragment:fragment-ktx:1.3.6")
-    compileOnly("androidx.appcompat:appcompat-resources:1.3.1")
+    implementation("androidx.core:core-ktx:1.8.0-alpha03")
+    implementation("androidx.activity:activity-ktx:1.5.0-alpha01")
+    implementation("androidx.fragment:fragment-ktx:1.5.0-alpha01")
+    compileOnly("androidx.appcompat:appcompat-resources:1.4.1")
 
-    compileOnly("com.google.android.material:material:1.4.0")
+    compileOnly("com.google.android.material:material:1.5.0")
 
 }
